@@ -2,6 +2,7 @@
 %w{rubygems platform cgi}.each {|library| require library}
 
 UtilityBelt.equip(:clipboard)
+UtilityBelt.equip(:webbrowser)
 
 module UtilityBelt
   module Google
@@ -14,15 +15,7 @@ module UtilityBelt
         puts "              (if invoking without args, must have text in clipboard)"
       else
         url = "http://google.com/search?q=#{CGI.escape(search_term)}"
-        case Platform::IMPL
-        when :macosx
-          Kernel.system("open #{url}")
-        when :windows
-          Kernel.system("start #{url}")
-        #when :linux
-        else
-          puts "Sorry, don't know how to open an URL from the command line on your platform"
-        end
+        WebBrowser.open(url)
       end
     end
   end

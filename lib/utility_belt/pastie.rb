@@ -1,6 +1,7 @@
 # automate creating pasties
 %w{platform net/http utility_belt}.each {|lib| require lib}
 UtilityBelt.equip(:clipboard)
+UtilityBelt.equip(:webbrowser)
 
 module UtilityBelt
   module Pastie
@@ -15,12 +16,7 @@ module UtilityBelt
 
       Clipboard.write(pastie_url) if Clipboard.available?
       
-      case Platform::IMPL
-      when :macosx
-        Kernel.system("open #{pastie_url}")
-      when :mswin
-        Kernel.system("start #{pastie_url}")
-      end
+      WebBrowser.open(pastie_url)
 
       return pastie_url
     end
