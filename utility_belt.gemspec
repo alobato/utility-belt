@@ -1,13 +1,13 @@
 require 'rubygems' 
 SPEC = Gem::Specification.new do |s| 
   s.name = "utility_belt"
-  s.version = "1.0.7"
+  s.version = "1.0.8"
   s.author = "Giles Bowkett"
   s.email = "gilesb@gmail.com"
   s.homepage = "http://utilitybelt.rubyforge.org"
   s.rubyforge_project = "utility_belt"
   s.platform = Gem::Platform::RUBY
-  s.summary = "A grab-bag of IRB power user madness."
+  s.summary = "A grab-bag of IRB power user madness. -- now with linux"
   s.files = Dir.glob("**/*")
   %w{amazon google pastie}.each do |command_line_utility|
     s.executables << command_line_utility
