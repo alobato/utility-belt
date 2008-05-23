@@ -25,6 +25,8 @@ class InteractiveEditor
     @editor = editor.to_s
     if @editor == "mate"
       @editor = "mate -w"
+    elsif @editor == "vim"
+      @editor = 'vim -c ":set ft=ruby"'
     end
   end
   def edit_interactively

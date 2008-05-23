@@ -41,7 +41,23 @@ module UtilityBelt
       rescue LoadError
         raise "You need the win32-clipboard gem for clipboard functionality!"
       end
-  
+
+    when :linux
+      #test execute xsel
+      `xsel`
+      if $?.exitstatus != 0
+        raise "You need to install xsel for clipboard functionality!"
+      end
+
+      def self.read
+        `xsel`
+      end
+      
+      def self.write(stuff)
+        `echo '#{stuff}' | xsel -i`
+      end
+      @@implemented = true
+
     else
       raise "No suitable clipboard implementation for your platform found!"
     end
