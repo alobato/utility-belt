@@ -33,6 +33,7 @@ module UtilityBelt
       clist -= Object.included_modules unless kself == Object
       clist = clist.map { |m| m.name }.reject { |m| m =~ /UtilityBelt/ || m =~ /Wirble/ }.sort.map { |m| m.constantize }
       clist.unshift(kself.superclass) if kself.superclass && kself.superclass != Object
+      clist.unshift(kself)
 
       inspector_methods = INSPECTORS.include?(inspector) ? [inspector] : INSPECTORS
       clist.each do |klass|
@@ -67,5 +68,5 @@ module UtilityBelt
     end
   end
 end
-Object.send(:include, UtilityBelt::PrintMethods)
+Object.send(:extend, UtilityBelt::PrintMethods)
 String.send(:include, UtilityBelt::Inflector) if String.instance_methods.select { |m| m == 'constantize' }.empty?
