@@ -34,8 +34,9 @@ class InteractiveEditor
       @file = Tempfile.new("irb_tempfile")
     end
     system("#{@editor} #{@file.path}")
-    Object.class_eval(`cat #{@file.path}`)
+    Object.class_eval(File.read(@file.path).gsub("\r", "\n"))
     rescue Exception => error
+      puts @file.path
       puts error
   end
 end
