@@ -1,4 +1,4 @@
-require 'rubygems' 
+#require 'rubygems' 
 SPEC = Gem::Specification.new do |s| 
   s.name = "utility_belt"
   s.version = "1.0.10"
