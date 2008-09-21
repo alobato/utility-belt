@@ -81,6 +81,25 @@ class Object
   end
   alias :hvi :history_to_vi
 
+  def history_to_textmate
+    handling_jruby_bug do
+      file = Tempfile.new("irb_tempfile")
+      get_lines(0..(Readline::HISTORY.size - 1)).each do |line|
+        file << "#{line}\n"
+      end
+      file.close
+      system("mate #{file.path}")
+    end
+  end
+  alias :hmate :history_to_textmate
+
+  def clear_history()
+    while true
+      Readline::HISTORY.delete_at(0) 
+    end
+  rescue IndexError
+  end
+
   private
   def get_line(line_number)
     Readline::HISTORY[line_number] rescue ""
@@ -91,7 +110,7 @@ class Object
     out = []
     lines = lines.to_a if lines.is_a? Range
     lines.each do |l|
-      out << Readline::HISTORY[l]
+      out << Readline::HISTORY[l] rescue IndexError
     end
     out
   end
