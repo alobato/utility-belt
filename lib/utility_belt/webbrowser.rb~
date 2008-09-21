@@ -25,7 +25,7 @@ module UtilityBelt
       if /konqueror/.match browser
         cmd = "dcop `dcop konq* | head -1` konqueror-mainwindow#1 newTab #{url}"
         Kernel.system(cmd)
-      elsif /(firefox)|(swiftweasel)/.match browser
+      elsif /(firefox)|(swiftweasel)/.match b
         Kernel.system("#{browser} -new-tab #{url}")
       else
         Kernel.system("#{browser} #{url}")
