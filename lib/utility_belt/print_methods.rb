@@ -7,16 +7,32 @@
 # author: Fabio Akita (akitaonrails.com)
 module UtilityBelt
   module Editor
-    # shortcut to textmate
-    def mate
-      edit_interactively 'mate'
+    def mate_class(obj)
+      edit_class 'mate', obj
     end
     
-    # shortcut to vi
-    def vi
-      edit_interactively 'vi'
+    def vi_class(obj)
+      edit_class 'vi', obj
+    end
+    
+    # allows you to create a class interactively bit by bit 
+    # and then edit the whole thing within an editor
+    def edit_class(editor, obj)
+      require 'ruby2ruby'
+      unless @file
+        @file = Tempfile.new("irb_tempfile")
+        File.open(@file.path, 'w+') do |f|
+          f.write Ruby2Ruby.translate(obj)
+        end
+      end
+      system("#{editor} #{@file.path}")
+      Object.class_eval(File.read(@file.path).gsub("\r", "\n"))
+    rescue Exception => error
+      puts @file.path
+      puts error
     end
   end
+  
   module PrintMethods
     INSPECTORS = [
       :public_methods,
@@ -39,6 +55,7 @@ module UtilityBelt
       clist.each do |klass|
         inspector_methods.each do |insmethod|
           mlist = klass.send(insmethod).sort
+          mlist -= klass.superclass.send(insmethod) if klass.respond_to?(:superclass) && clist.include?(klass.superclass)
           mlist -= Object.send(insmethod) unless klass == Object
           mlist -= ['append_features'] # dunno where this method comes from
           unless mlist.empty?
@@ -68,5 +85,8 @@ module UtilityBelt
     end
   end
 end
-Object.send(:extend, UtilityBelt::PrintMethods)
-String.send(:include, UtilityBelt::Inflector) if String.instance_methods.select { |m| m == 'constantize' }.empty?
+if Object.const_defined? :IRB
+  Object.send(:extend, UtilityBelt::PrintMethods) 
+  self.send(:extend, UtilityBelt::Editor) 
+  String.send(:include, UtilityBelt::Inflector) if String.instance_methods.select { |m| m == 'constantize' }.empty?
+end

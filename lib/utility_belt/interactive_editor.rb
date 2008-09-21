@@ -34,7 +34,9 @@ class InteractiveEditor
       @file = Tempfile.new("irb_tempfile")
     end
     system("#{@editor} #{@file.path}")
-    Object.class_eval(File.read(@file.path).gsub("\r", "\n"))
+    lines = File.read(@file.path).gsub("\r", "\n")
+    lines.split("\n").each { |l| Readline::HISTORY << l } # update history
+    Object.class_eval(lines)
     rescue Exception => error
       puts @file.path
       puts error

@@ -43,8 +43,8 @@ class Object
   end
   alias :h  :history
 
-  # -2 because -1 is ourself
-  def history_do(lines = (Readline::HISTORY.size - 2))
+  # -3 because -1 is nil and -2 is ourself
+  def history_do(lines = (Readline::HISTORY.size - 3))
     irb_eval lines
   end 
   alias :h! :history_do
@@ -123,6 +123,7 @@ class Object
   def irb_eval(lines)
     to_eval = get_lines(lines)
     to_eval.each {|l| Readline::HISTORY << l}
+    to_eval.reject! { |l| l.strip == 'h' || l =~ /^h\!/ } # avoid infinite recursion of itself
     eval to_eval.join("\n")
   end
 end

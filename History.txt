@@ -1,3 +1,31 @@
+== 1.0.11 / 2008-09-21
+
+* Fixed the h! command that was recursing within itself.
+
+* Added Ruby2Ruby dependency to allow the developer to create
+  classes with IRB, by reopening and changing it and then
+  editing the whole thing within vi or textmate. by Fabio 
+  Akita
+
+* Editing from an outside editor doesn't change the history
+  so fixed with the reload of the externally edited program
+  within the history. by Fabio Akita
+
+* Trying to fix the gemspec so Github can automatically 
+  build the gem. by Fabio Akita
+
+== 1.0.10 / 2008-09-20
+
+* New "print_methods" for any class to print all the available methods
+  from itself and its superclass, included modules, etc with a more
+  visually compeling organization. by Fabio Akita
+
+* Added 'clear_history' command to clear the Readline history. by
+  Fabio Akita
+
+* Fixed the edit_interactively method that was failing for vi. And 
+  fixed the \r line break to replace it to \n. by Fabio Akita
+
 == 1.0.0 / 2007-11-03
 
 * 1 major enhancement
